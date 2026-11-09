@@ -4,9 +4,8 @@
   "main": "./src/main.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/main.js",
+    "start": "cross-env NODE_ENV=production node ./src/main.js",
   "start:dev": "cross-env NODE_ENV=development  node --watch-path=. ./src/main.js",
-  "start:prod": "cross-env NODE_ENV=production  node  ./src/main.js"
   },
   "keywords": [],
   "author": "",
