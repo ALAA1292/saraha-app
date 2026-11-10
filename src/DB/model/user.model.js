@@ -51,14 +51,9 @@ const userSchema = new Schema({
         enum: Object.values(roleEnum),
         default: roleEnum.USER
     },
+    // plain field: the unique index is defined below as a partial index
     googleSub: {
-        type: String,
-        index: {
-            name: 'idx_google_sub_unique',
-            unique: true
-        }
-
-
+        type: String
     },
     provider: {
         type: String,
@@ -89,6 +84,17 @@ const userSchema = new Schema({
         toJSON: { virtuals: true },         //has to be true so virtuals can work
         timestamps: true
     });
+
+// Unique only when googleSub is a real string, so email-signup users
+// (no googleSub) don't collide on null.
+userSchema.index(
+    { googleSub: 1 },
+    {
+        name: 'idx_google_sub_unique',
+        unique: true,
+        partialFilterExpression: { googleSub: { $type: 'string' } }
+    }
+);
 
 // console.log({ allModels: mongoose.Models })
 const User = mongoose.model('User', userSchema);         //making model
